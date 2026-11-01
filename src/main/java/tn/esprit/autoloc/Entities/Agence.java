@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Agence {
@@ -14,4 +17,49 @@ public class Agence {
     String ville;
     String adresse;
     String telephone;
+
+    @OneToMany(mappedBy = "agence")
+    private List<Vehicule> vehicules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "agence")
+    private List<Employe> employes = new ArrayList<>();
+    public Long getIdAgence() {
+        return idAgence;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setIdAgence(Long idAgence) {
+        this.idAgence = idAgence;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
 }

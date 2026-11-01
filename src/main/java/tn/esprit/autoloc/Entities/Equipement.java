@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Equipement {
@@ -11,4 +14,7 @@ public class Equipement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idEquipement;
     String libelle;
+
+    @ManyToMany(mappedBy = "equipements")
+    private Set<Vehicule> vehicules = new HashSet<>();
 }

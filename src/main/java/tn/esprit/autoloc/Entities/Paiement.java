@@ -6,6 +6,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -18,4 +20,9 @@ public class Paiement {
     LocalDate datePaiement;
     @Enumerated(EnumType.STRING)
     ModePaiement modePaiement;
+
+    @OneToOne
+    @JoinColumn(name = "id_contrat", unique = true)
+    private Contrat contrat;
 }
+
