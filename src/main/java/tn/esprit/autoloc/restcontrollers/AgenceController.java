@@ -12,34 +12,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.autoloc.Entities.Agence;
-import tn.esprit.autoloc.Service.IAgence;
+import tn.esprit.autoloc.service.IAgenceService;
 
 @RestController
 @RequestMapping("/agences")
 public class AgenceController {
-    private final IAgence service;
-    public AgenceController(IAgence service) { this.service = service; }
+    private final IAgenceService service;
+    public AgenceController(IAgenceService service) { this.service = service; }
 
     @PostMapping("/Add")
     public ResponseEntity<Agence> create(@RequestBody Agence agence) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.ajouterAgence(agence));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(agence));
     }
     @GetMapping("/getAll")
-    public List<Agence> getAll() { return service.obtenirToutesLesAgences(); }
+    public List<Agence> getAll() { return service.findAll(); }
     @GetMapping("/Get/{id}")
     public ResponseEntity<Agence> get(@PathVariable Long id) {
-        return service.obtenirAgence(id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.findById(id));
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<Agence> update(@PathVariable Long id, @RequestBody Agence agence) {
-        if (service.obtenirAgence(id).isEmpty()) return ResponseEntity.notFound().build();
-        agence.setIdAgence(id);
-        return ResponseEntity.ok(service.modifierAgence(agence));
+        return ResponseEntity.ok(service.update(id, agence));
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (service.obtenirAgence(id).isEmpty()) return ResponseEntity.notFound().build();
-        service.supprimerAgence(id);
+        service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

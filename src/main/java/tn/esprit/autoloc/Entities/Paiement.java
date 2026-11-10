@@ -1,5 +1,8 @@
 package tn.esprit.autoloc.Entities;
 
+import lombok.Getter;
+import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,6 +15,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
+@JsonIgnoreProperties(value = "contrat", allowSetters = true)
+@Getter
+@Setter
 public class Paiement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

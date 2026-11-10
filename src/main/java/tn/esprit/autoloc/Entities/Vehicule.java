@@ -1,5 +1,8 @@
 package tn.esprit.autoloc.Entities;
 
+import lombok.Getter;
+import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,6 +21,9 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties(value = {"agence", "reservations", "maintenances", "equipements"}, allowSetters = true)
+@Getter
+@Setter
 public class Vehicule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

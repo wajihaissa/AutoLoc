@@ -12,50 +12,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.autoloc.Entities.Client;
-import tn.esprit.autoloc.Service.IClient;
+import tn.esprit.autoloc.service.IClientService;
 
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
-    private final IClient clientService;
+    private final IClientService clientService;
 
-    public ClientController(IClient clientService) {
+    public ClientController(IClientService clientService) {
         this.clientService = clientService;
     }
 
     @PostMapping
     public ResponseEntity<Client> ajouterClient(@RequestBody Client client) {
-        Client savedClient = clientService.ajouterClient(client);
+        Client savedClient = clientService.create(client);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedClient);
     }
 
     @GetMapping
     public List<Client> obtenirTousLesClients() {
-        return clientService.obtenirTousLesClients();
+        return clientService.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Client> obtenirClient(@PathVariable Long id) {
-        return clientService.obtenirClient(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(clientService.findById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Client> modifierClient(@PathVariable Long id, @RequestBody Client client) {
-        if (clientService.obtenirClient(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        client.setIdClient(id);
-        return ResponseEntity.ok(clientService.modifierClient(client));
+        return ResponseEntity.ok(clientService.update(id, client));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> supprimerClient(@PathVariable Long id) {
-        if (clientService.obtenirClient(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        clientService.supprimerClient(id);
+        clientService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
