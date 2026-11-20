@@ -3,6 +3,7 @@ package tn.esprit.autoloc.Entities;
 import lombok.Getter;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.GeneratedValue;
@@ -10,11 +11,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@JsonIgnoreProperties(value = {"reservation", "paiement"}, allowSetters = true)
+@JsonIgnoreProperties(value = "reservation", allowSetters = true)
 @Getter
 @Setter
 public class Contrat {
@@ -29,7 +33,8 @@ public class Contrat {
     @JoinColumn(name = "id_reservation", unique = true)
     private Reservation reservation;
 
-    @OneToOne(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Paiement paiement;
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("contrat-paiements")
+    private List<Paiement> paiements = new ArrayList<>();
 }
 

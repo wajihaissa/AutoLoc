@@ -20,8 +20,8 @@ public class ContratServiceImpl implements IContratService {
             throw new IllegalArgumentException("Un nouveau contrat ne doit pas avoir d'identifiant");
         }
         validate(contrat);
-        if (contrat.getPaiement() != null) {
-            contrat.getPaiement().setContrat(contrat);
+        if (contrat.getPaiements() != null) {
+            contrat.getPaiements().forEach(paiement -> paiement.setContrat(contrat));
         }
         return contratRepository.save(contrat);
     }
